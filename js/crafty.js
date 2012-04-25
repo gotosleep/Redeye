@@ -6616,7 +6616,8 @@ Crafty.c("particles", {
 						url = id[key];
 					}
 
-					for (; i < this.MAX_CHANNELS; i++) {
+                    sounds = [];
+					for (i = 0; i < this.MAX_CHANNELS; i++) {
 						audio = new Audio(url);
 						audio.preload = "auto";
 						audio.load();

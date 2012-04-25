@@ -68,7 +68,13 @@ $(document).ready(function () {
     // audio
 
     Crafty.audio.add({
-        laser:["sounds/laser.wav"]
+        explode:"sounds/explode.wav",
+        laser:"sounds/laser.wav",
+        laser2:"sounds/laser2.wav",
+        laser3:"sounds/laser3.wav",
+        building:"sounds/building.wav",
+        planeExplode:"sounds/planeExplode.wav",
+        bullet:"sounds/bullet.wav"
     });
 
     Crafty.c('Attached', {
@@ -144,10 +150,11 @@ $(document).ready(function () {
                                 type = y === 0 ? "building1T" : "building1C";
                             }
 
-                            var piece = Crafty.e("2D, DOM, solid, Building, Life, Gravity, Attached, " + type)
-                                .attr({ 'x':config.width + (x * this.building1Height), y:placement + (this.building1Height * y), 'z':z});
-                            piece.life(2);
-                            piece.gravity("solid");
+                            Crafty.e("2D, DOM, solid, Building, Life, Gravity, Attached, " + type)
+                                .attr({ 'x':config.width + (x * this.building1Height), y:placement + (this.building1Height * y), 'z':z})
+                                .life(2)
+                                .gravity("solid")
+                                .deathSound("building");
                         }
                     }
                 }
@@ -472,6 +479,7 @@ $(document).ready(function () {
         _life:1,
         _cost:1,
         _power:1,
+        _deathSound:undefined,
         init:function () {
         },
         attack:function (other) {
@@ -537,7 +545,17 @@ $(document).ready(function () {
             this.trigger("Died");
             Crafty.e("Explosion")
                 .explode(this);
+            if (this._deathSound) {
+                Crafty.audio.play(this._deathSound);
+            }
             this.destroy();
+        },
+        deathSound:function (value) {
+            if (value) {
+                this._deathSound = value;
+                return this;
+            }
+            return this._deathSound;
         }
     });
 
@@ -584,15 +602,17 @@ $(document).ready(function () {
 
     Crafty.c('Tank', {
         init:function () {
-            this.requires("NPC, tank");
-            this.life(2);
-            this.cost(5);
+            this.requires("NPC, tank")
+                .life(2)
+                .cost(5)
+                .deathSound("explode");
         }
     });
 
     Crafty.c("Plane", {
         init:function () {
-            this.requires("NPC, plane");
+            this.requires("NPC, plane")
+                .deathSound("planeExplode");
         }
     });
 
@@ -609,6 +629,7 @@ $(document).ready(function () {
             this.life(5);
         },
         shoot:function (shooter, target) {
+            Crafty.audio.play("bullet");
             this.shootTarget(shooter, target, 3.5);
         }
     });
@@ -622,7 +643,7 @@ $(document).ready(function () {
             this.crop(0, 0, 32, 6);
         },
         shoot:function (shooter, direction) {
-//            Crafty.audio.play("laser");
+            Crafty.audio.play("laser");
             this.shootDirection(shooter, direction, this._speedX, this._speedY);
         }
     });
@@ -764,6 +785,7 @@ $(document).ready(function () {
                         if (direction == "left") {
                             b.addComponent("Attached");
                         }
+                        Crafty.audio.play("bullet");
                         b.shootDirection(this, direction, 5, 5);
                     }
                 });
