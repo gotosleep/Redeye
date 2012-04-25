@@ -74,7 +74,8 @@ $(document).ready(function () {
         laser3:"sounds/laser3.wav",
         building:"sounds/building.wav",
         planeExplode:"sounds/planeExplode.wav",
-        bullet:"sounds/bullet.wav"
+        bullet:"sounds/bullet.wav",
+        abduct:"sounds/abduct.wav"
     });
 
     Crafty.c('Attached', {
