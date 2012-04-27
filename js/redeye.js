@@ -75,7 +75,8 @@ $(document).ready(function () {
         building:"sounds/building.wav",
         planeExplode:"sounds/planeExplode.wav",
         bullet:"sounds/bullet.wav",
-        abduct:"sounds/abduct.wav"
+        abduct:"sounds/abduct.wav",
+        hurt:"sounds/hurt.wav"
     });
 
     Crafty.c('Attached', {
@@ -218,6 +219,7 @@ $(document).ready(function () {
                     return;
                 }
                 var beam = this;
+                Crafty.audio.playOnce("abduct");
 
                 $.each(this.hit("food"), function (index, value) {
                     var target = value.obj;
@@ -306,6 +308,7 @@ $(document).ready(function () {
         _abduct:undefined,
         Robo:function () {
             this.requires("SpriteAnimation, Collision, Life");
+            this.hurtSound = "hurt";
             this._resting = this.y;
             //setup animations
             this.animate("walk_left", 2, 0, 3)
@@ -474,6 +477,23 @@ $(document).ready(function () {
         }
     });
 
+    Crafty.audio.isPlaying = function (id) {
+        var sounds = this._elems[id];
+        if (sounds) {
+            for (var i = 0; i < sounds.length; ++i) {
+                var sound = sounds[i];
+                if (sound.currentTime > 0 && sound.ended === false) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    Crafty.audio.playOnce = function (id) {
+        !this.isPlaying(id) && this.play(id);
+    }
+
     Crafty.c('Life', {
         _points:10,
         _maxLife:1,
@@ -481,6 +501,7 @@ $(document).ready(function () {
         _cost:1,
         _power:1,
         _deathSound:undefined,
+        hurtSound:undefined,
         init:function () {
         },
         attack:function (other) {
@@ -488,13 +509,13 @@ $(document).ready(function () {
             this.hurt(other.cost());
         },
         hurt:function (power) {
-            if (power === undefined) {
-                power = 1;
-            }
+            power = power || 1;
             this._life -= power;
             this._notify();
             if (this._life <= 0) {
                 this.die();
+            } else if (this.hurtSound) {
+                Crafty.audio.playOnce(this.hurtSound);
             }
         },
         _notify:function () {
@@ -607,6 +628,7 @@ $(document).ready(function () {
                 .life(2)
                 .cost(5)
                 .deathSound("explode");
+            this.hurtSound = "hurt";
         }
     });
 
@@ -614,6 +636,7 @@ $(document).ready(function () {
         init:function () {
             this.requires("NPC, plane")
                 .deathSound("planeExplode");
+            this.hurtSound = "hurt";
         }
     });
 
