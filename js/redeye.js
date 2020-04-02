@@ -336,15 +336,15 @@ $(document).ready(function () {
 
             this.bind("KeyDown",
                 function (e) {
-                    if (e.key === Crafty.keys.UP_ARROW || Crafty.keys === Crafty.keys.DOWN_ARROW) {
+                    if (e.keyCode === Crafty.keys.UP_ARROW || Crafty.keys === Crafty.keys.DOWN_ARROW) {
                         this._hovering = false;
-                    } else if (e.key == Crafty.keys.SPACE) {
+                    } else if (e.keyCode == Crafty.keys.SPACE) {
                         this.abduct(true);
                     }
                 }).bind("KeyUp", function (e) {
-                    if (e.key === Crafty.keys.UP_ARROW || Crafty.keys === Crafty.keys.DOWN_ARROW) {
+                    if (e.keyCode === Crafty.keys.UP_ARROW || Crafty.keys === Crafty.keys.DOWN_ARROW) {
                         this._hovering = !Crafty.keydown[Crafty.keys.UP_ARROW] && !Crafty.keydown[Crafty.keys.DOWN_ARROW];
-                    } else if (e.key == Crafty.keys.SPACE) {
+                    } else if (e.keyCode == Crafty.keys.SPACE) {
                         this.abduct(false);
                     }
                 });
@@ -989,7 +989,7 @@ $(document).ready(function () {
         proceed.startBlink();
 
         proceed.bind("KeyDown", function (e) {
-            if (e.key == Crafty.keys.ENTER) {
+            if (e.keyCode == Crafty.keys.ENTER) {
                 Crafty.scene("main"); //when everything is loaded, run the main scene
             }
         });
@@ -1014,7 +1014,7 @@ $(document).ready(function () {
         proceed.startBlink();
 
         proceed.bind("KeyDown", function (e) {
-            if (e.key == Crafty.keys.ENTER) {
+            if (e.keyCode == Crafty.keys.ENTER) {
                 Crafty.scene("main");
             }
         });
