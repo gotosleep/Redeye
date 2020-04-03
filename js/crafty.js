@@ -4478,14 +4478,14 @@ Crafty.extend({
 	* Unicode of the key pressed
 	*/
 	keyboardDispatch: function (e) {
-		e.key = e.keyCode || e.which;
+		var key = e.keyCode || e.which;
 		if (e.type === "keydown") {
-			if (Crafty.keydown[e.key] !== true) {
-				Crafty.keydown[e.key] = true;
+			if (Crafty.keydown[key] !== true) {
+				Crafty.keydown[key] = true;
 				Crafty.trigger("KeyDown", e);
 			}
 		} else if (e.type === "keyup") {
-			delete Crafty.keydown[e.key];
+			delete Crafty.keydown[key];
 			Crafty.trigger("KeyUp", e);
 		}
 
