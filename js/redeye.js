@@ -126,7 +126,7 @@ $(document).ready(function () {
             while (this.groundProgress < x) {
                 var type = Crafty.math.randomInt(1, 2) % 2 == 0 ? "grass" : "dirt";
                 type += Crafty.math.randomInt(1, 2);
-                Crafty.e("2D, DOM, solid, ground, Attached, " + type)
+                Crafty.e("2D, Canvas, solid, ground, Attached, " + type)
                     .attr({ 'x':this.groundProgress, y:config.height - 16, z:1 });
                 this.groundProgress += 16;
             }
@@ -152,7 +152,7 @@ $(document).ready(function () {
                                 type = y === 0 ? "building1T" : "building1C";
                             }
 
-                            Crafty.e("2D, DOM, solid, Building, Life, Gravity, Attached, " + type)
+                            Crafty.e("2D, Canvas, solid, Building, Life, Gravity, Attached, " + type)
                                 .attr({ 'x':config.width + (x * this.building1Height), y:placement + (this.building1Height * y), 'z':z})
                                 .life(2)
                                 .gravity("solid")
@@ -212,7 +212,7 @@ $(document).ready(function () {
         _people:[],
         _on:false,
         init:function () {
-            this.requires("2D, DOM, Collision, SpriteAnimation, beam");
+            this.requires("2D, Canvas, Collision, SpriteAnimation, beam");
             this.attr({visible:false});
             this.bind("EnterFrame", function () {
                 if (this._on === false) {
@@ -584,7 +584,7 @@ $(document).ready(function () {
     Crafty.c("Explosion", {
         _repeatCount:1,
         init:function () {
-            this.requires("2D, DOM, explosion, SpriteAnimation, Attached");
+            this.requires("2D, Canvas, explosion, SpriteAnimation, Attached");
             this.animate("explode", 1, 0, 2);
         },
         explode:function (target) {
@@ -618,7 +618,7 @@ $(document).ready(function () {
 
     Crafty.c("NPC", {
         init:function () {
-            this.requires("2D, DOM, SpriteAnimation, Collision, Life, Expires");
+            this.requires("2D, Canvas, SpriteAnimation, Collision, Life, Expires");
         }
     });
 
@@ -675,7 +675,7 @@ $(document).ready(function () {
     Crafty.c('Projectile', {
         _targetType:undefined,
         init:function () {
-            this.requires("2D, DOM, SpriteAnimation, Collision, Life");
+            this.requires("2D, Canvas, SpriteAnimation, Collision, Life");
         },
         shootDirection:function (shooter, direction, speedX, speedY) {
             if (direction === "rightdown") {
